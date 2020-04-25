@@ -10,6 +10,7 @@ class Frigo:
 
     def __init__(self):
         self.contenu = 5 # le frigo contient 5 plats au depart
+        self.salete = 100
 
 
     def manger(self):
@@ -18,6 +19,7 @@ class Frigo:
 
         if input_manger == 'yes':
             self.contenu -= 1
+            self.salete -= 10
             print("Vous manger l'item!")
             sims.fatigue -= 4
             sims.faim += 20
@@ -36,13 +38,24 @@ class Frigo:
         sims.distraction -= 35
         print("Vous avez maintenant {} plats dans votre frigo.".format(self.contenu))
 
+
+    def nettoyer(self):
+        print("Vous nettoyer le frigo!")
+        self.salete = 100
+
+
 # -------------------
 
 class Lit:
 
+    def __init__(self):
+        self.salete = 100
+
     def dormir(self):
         se_coucher = input("Voulez vous vous coucher? yes/no : ")
+        
         if se_coucher == 'yes':
+            self.salete -= 15
             print("Vous vous enrouler sous la couette!")
             sims.fatigue = 99
             sims.hygiene -= 18
@@ -51,13 +64,24 @@ class Lit:
         else:
             print("Vous avez changer d'avis.")
 
+
+    def nettoyer(self):
+        print("Vous nettoyer les draps du lit!")
+        self.salete = 100
+
+
 # -------------------
 
 class Douche:
 
+    def __init__(self):
+        self.salete = 100
+
     def laver(self):
         se_laver = input("Voulez vous vous laver? yes/no : ")
+        
         if se_laver == 'yes':
+            self.salete -= 5
             print("Vous vous enfermez dans la douche!")
             sims.fatigue -= 9
             sims.faim -= 8
@@ -66,12 +90,19 @@ class Douche:
         else:
             print("Vous avez changer d'avis.")
 
+
+    def nettoyer(self):
+        print("Vous nettoyer la douche!")
+        self.salete = 100
+
+
 # -------------------
 
 class Amusement:
 
     def watch(self):
         regarder_tv = input("Voulez vous regarder la TV? yes/no : ")
+        
         if regarder_tv == 'yes':
             print("Vous vous abrutissez devant la television.")
             sims.fatigue -= 12
@@ -141,6 +172,7 @@ while game == True:
           "3. Aller a la salle de bain\n"
           "4. Aller dans la chambre\n"
           "5. Aller dans le salon\n")
+
     choix = int(input("Entrer le nb correspondant a la piece: "))
 
     if choix == 1:
@@ -156,35 +188,53 @@ while game == True:
     if choix == 2:
         print("Ceci est la cuisine. Que faire?\n"
               "1. Se nourrir\n"
-              "2. Faire les courses\n")
+              "2. Faire les courses\n"
+              "3. Nettoyer le frigo\n")
         choix2 = int(input("Entrer le nb de votre choix: "))
 
         if choix2 == 1:
-            frigo.manger()
+            if frigo.salete <= 0:
+                print("Desole mais le frigo pue, faut le laver.")
+            else:
+                frigo.manger()
         if choix2 == 2:
             frigo.remplir()
+        if choix2 == 3:
+            frigo.nettoyer()
         else:
             print("Choix non valide!")
 
 
     if choix == 3:
         print("Ceci est la salle de bain. Que faire?\n"
-              "1. Se doucher\n")
+              "1. Se doucher\n"
+              "2. Nettoyer la douche\n")
         choix2 = int(input("Entrer le nb de votre choix: "))
 
         if choix2 == 1:
-            douche.laver()
+            if douche.salete <= 0:
+                print("Desole mais la douche est toute crade...")
+            else:
+                douche.laver()
+        if choix2 == 2:
+            douche.nettoyer()
         else:
             print("Choix non valide!")
 
 
     if choix == 4:
         print("Ceci est la chambre. Que faire?\n"
-              "1. Se coucher\n")
+              "1. Se coucher\n"
+              "2. Nettoyer les draps\n")
         choix2 = int(input("Entrer le nb de votre choix: "))
 
         if choix2 == 1:
-            lit.dormir()
+            if lit.salete <= 0:
+                print("Non, je dors pas dans des draps sales...")
+            else:
+                lit.dormir()
+        if choix2 == 2:
+            lit.nettoyer()
         else:
             print("Choix non valide!")
 
